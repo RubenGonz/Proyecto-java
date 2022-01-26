@@ -19,7 +19,7 @@ pipeline {
         }
         stage('Test del despliegue') {
             steps {
-                sh 'wget -q localhost:8082/app-web-ruben -O - | grep 8082'
+                sh 'wget -q localhost:8082/app-web-ruben -O - | grep Ruben'
             }
         }
 //
