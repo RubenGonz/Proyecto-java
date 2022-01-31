@@ -38,7 +38,7 @@ services:
     sftp:
         image: atmoz/sftp
         volumes:
-            - ./www/subdominio:/var/www/html/subdominio
+            - ./www/subdominio:/var/www/html/sftp
         ports:
             - "2222:22"
         command: usuario:123456:2222
