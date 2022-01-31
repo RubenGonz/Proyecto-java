@@ -1,34 +1,15 @@
 pipeline {
     agent any
     stages {
-        stage('Tests de la aplicacion') {
+        stage('Deploy') {
             steps {
-                sh 'mvn clean test'
+                sh 'sudo docker-compose up --build .'
             }
         }
-        stage('Construccion') {
+        stage('Test') {
             steps {
-                sh 'mvn clean package'
+                sh 'wget -q http://www.rubengrsystem.com/home -O - | grep Pagina'
             }
         }
-        stage('Despliegue') {
-            steps {
-                sh 'docker build -t proyecto-java .'
-                sh 'docker run -d --rm -p 8082:8080 --name ContenedorProyectoJava proyecto-java'
-            }
-        }
-        stage('Test del despliegue') {
-            steps {
-                sh 'wget -q localhost:8082/app-web-ruben -O - | grep Ruben'
-            }
-        }
-//
-//      En el caso de querer borrar el contenedor tras testearlo pondremos:
-//
-//        stage('Borar contenedor') {  
-//            steps {
-//                sh 'docker stop ContenedorProyectoJava'  
-//            }
-//        }
     }
 }
