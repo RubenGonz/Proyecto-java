@@ -1,10 +1,14 @@
-FROM tomcat:9.0
-LABEL maintainer="ruben303030@gmail.com"
+FROM jboss/wildfly
 
 ARG WAR_FILE=target/*.war
 
-ADD ${WAR_FILE} /usr/local/tomcat/webapps/
+ADD ${ARG} /opt/jboss/wildfly/standalone/deployments/
 
-EXPOSE 80
+ARG WILDFLY_NAME
+ARG CLUSTER_PW
 
-CMD ["catalina.sh", "run"]
+ENV WILDFLY_NAME=${WILDFLY_NAME}
+ENV CLUSTER_PW=${CLUSTER_PW}
+
+
+ENTRYPOINT /opt/jboss/wildfly/bin/standalone.sh -b=0.0.0.0 -bmanagement=0.0.0.0 -Djboss.server.default.config=standalone-full-ha.xml -Djboss.node.name=${WILDFLY_NAME} -Djava.net.preferIPv4Stack=true -Djgroups.bind_addr=$(hostname -i) -Djboss.messaging.cluster.password=${CLUSTER_PW}
