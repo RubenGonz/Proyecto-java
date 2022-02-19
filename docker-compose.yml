@@ -11,10 +11,10 @@ services:
     ports:
     - 9001:8080
     networks:
-      wildfly_network:
+      - default
 
   wildfly2:
-    build: 
+    build:
       context: .
       args:
         WILDFLY_NAME: wildfly_2
@@ -23,9 +23,28 @@ services:
     ports:
     - 9002:8080
     networks:
-      wildfly_network:
-
-networks:
-  wildfly_network:
-    ipam:
-      driver: default
+      - default
+  
+  wildfly3:
+    build:
+      context: .
+      args:
+        WILDFLY_NAME: wildfly_3
+        CLUSTER_PW: secret_password
+    image: wildfly_3
+    ports:
+    - 9003:8080
+    networks:
+      - default
+  
+  wildfly4:
+    build:
+      context: .
+      args:
+        WILDFLY_NAME: wildfly_4
+        CLUSTER_PW: secret_password
+    image: wildfly_4
+    ports:
+    - 9004:8080
+    networks:
+      - default
